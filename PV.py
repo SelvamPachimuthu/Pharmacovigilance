@@ -1,13 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import date as Date
-
-# Check fpdf2 installation
-import importlib.util
-if importlib.util.find_spec("fpdf") is None:
-    st.error("fpdf2 is not installed! Make sure it's in requirements.txt.")
-else:
-    from fpdf import FPDF
+from fpdf import FPDF
 
 # Page configuration
 st.set_page_config(
