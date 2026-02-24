@@ -10,6 +10,18 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown(
+    """
+    <style>
+    /* Hide top-right hamburger menu & GitHub icon */
+    [data-testid="header"] {visibility: hidden;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.write("Hello, Safety Professionals! Welcome to the Pharmacovigilance Hub. Explore the tabs to learn about key PV domains and global guidelines.")
+
 st.markdown("""
 <style>
 /* Page background: soft sandy/light gradient */
