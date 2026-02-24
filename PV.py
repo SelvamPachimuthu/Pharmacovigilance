@@ -94,7 +94,7 @@ page = st.sidebar.radio(
     [
         "Home",
         "ICSR Processing",
-        "Literature Review",
+        "Literature Monitoring",
         "Aggregate Reports Preparation",
         "Signal Management",
         "Risk Management",
@@ -257,7 +257,7 @@ Once medicines reach the market, safety monitoring expands to real-world sources
         route = st.selectbox("Route of Administration", ["Oral", "IV", "IM", "Subcutaneous", "Other"])
         start_date = st.date_input("Start Date")
         end_date = st.date_input("End Date")
-        indication = st.text_area("Indication / Reason for Use")
+        indication = st.text_area("Indication / Reason for Use"
 
     # Causality Tab
     with tabs[6]:
@@ -265,6 +265,8 @@ Once medicines reach the market, safety monitoring expands to real-world sources
         causality_method = st.selectbox("Causality Assessment Method", ["WHO-UMC", "Naranjo", "Other"])
         causality_result = st.selectbox("Assessment Result", ["Certain", "Probable", "Possible", "Unlikely", "Conditional", "Unassessable"])
         reporter_comments = st.text_area("Reporter Comments")
+        Dechallenge = st.selectbox("Dechallenge", ["Positive", "Negative", "Not Applicable"])
+        Rechallenge = st.selectbox("Rechallenge", ["Positive", "Negative", "Not Applicable"])
 
     # Analysis Tab
     with tabs[7]:
@@ -291,7 +293,7 @@ Once medicines reach the market, safety monitoring expands to real-world sources
             st.success("PDF generated successfully!")
 
 # ---------------- LITERATURE REVIEW ----------------
-elif page == "Literature Review":
+elif page == "Literature Monitoring":
     st.header("Literature Monitoring")
     url = "https://www.ema.europa.eu/en/documents/regulatory-procedural-guideline/guideline-good-pharmacovigilance-practices-gvp-module-vi-collection-management-submission-reports-suspected-adverse-reactions-medicinal-products-rev-2_en.pdf"
     st.markdown(f"[📄 Guideline GVP Module VI (PDF)-Literature Screening]({url})")
@@ -302,8 +304,12 @@ elif page == "Literature Review":
     )
 
     # Example list of listed adverse events
-    listed_adverse_events = ["Nausea", "Headache", "Rash", "Dizziness"]
-
+    st.title("Literature Monitoring Model Dashboard")
+    listed_adverse_events = ["Nausea", "nausea", "Headache","headache", "Rash","rash", "Dizziness","dizziness", "Fatigue","fatigue", "Diarrhea","diarrhea"]
+    Listed_Adverse_Events = ["Nausea", "Headache", "Rash", "Dizziness", "Fatigue", "Diarrhea"]
+    st.write ("Example listed adverse events for the drug (for screening purposes):")
+    st.table(pd.DataFrame(Listed_Adverse_Events, columns=["Listed Adverse Events"]))
+    st.write("If you write an adverse reaction that is not in the listed adverse events, it will be flagged as potential safety information.")
     # Choose data type
     data_type = st.selectbox(
         "Choose single patient or aggregate data for literature screening", 
@@ -315,12 +321,17 @@ elif page == "Literature Review":
         st.write("Choose single patient or aggregate data for literature screening")
 
     # Inputs common to both
+    PMID = st.text_input("PMID")
+    if PMID:
+        st.markdown(f"🔗 [View Article on PubMed](https://pubmed.ncbi.nlm.nih.gov/{PMID}/)")
+    article_title = st.text_input("Article Title")
     drug = st.text_input("Drug")
     reaction = st.text_input("Adverse Reaction")
-
+    
     # Inputs specific to Single Patient
     if data_type == "Single Patient":
         reporter_name = st.text_input("Primary Reporter Name")
+        Country_name = st.text_input("Country of Reporter")
         patient_identifier = st.text_input("Patient Identifier")
         MAH_marketing = st.selectbox(
             "Did MAH market the drug in the reporter's country?", 
