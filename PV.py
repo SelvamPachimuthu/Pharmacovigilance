@@ -10,17 +10,16 @@ st.set_page_config(
     layout="wide"
 )
 
+
 st.markdown(
     """
-    <style>
-    /* Hide top-right hamburger menu & GitHub icon */
-    [data-testid="header"] {visibility: hidden;}
-    </style>
+    <h2 style='color: purple; font-weight: bold;'>
+    Hello, Safety Professionals! Welcome to the Pharmacovigilance Hub. Explore the tabs to learn about key PV domains and global guidelines.
+    </h2>
     """,
     unsafe_allow_html=True
 )
 
-st.write("Hello, Safety Professionals! Welcome to the Pharmacovigilance Hub. Explore the tabs to learn about key PV domains and global guidelines.")
 
 st.markdown("""
 <style>
@@ -84,8 +83,7 @@ st.markdown("""
 st.title("💊📄 Pharmacovigilance - Drug Safety Data Management")
 
 st.markdown("""
-Welcome to the **Pharmacovigilance Review Portal**.
-
+            
 This app helps with understanding of safety data management in the pharmaceutical industry, aligned with global regulatory guidelines.
 """)
 
