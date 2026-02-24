@@ -98,7 +98,7 @@ elif page == "ICSR Processing":
     url = "https://www.ema.europa.eu/en/documents/regulatory-procedural-guideline/guideline-good-pharmacovigilance-practices-gvp-module-vi-collection-management-submission-reports-suspected-adverse-reactions-medicinal-products-rev-2_en.pdf"
     st.markdown(f"[📄 Guideline GVP Module VI (PDF)]({url})")
 
-    st.info("📊 ICSR management is a fundamental activity of pharmacovigilance
+    st.text("""📊 ICSR management is a fundamental activity of pharmacovigilance
 
 ✨ICSR ( identifiable reporter, an identifiable patient, a suspect product, and an adverse event. Without all four, it’s a "non-valid" case.)
 📋Steps:
@@ -156,7 +156,7 @@ Once medicines reach the market, safety monitoring expands to real-world sources
 • Medical information contacts
 • Health authority communications
 • Scientific and medical literature
-• Social media monitoring")
+• Social media monitoring""")
 
     st.title("ICSR Processing Model Dashboard")
 
@@ -252,16 +252,38 @@ Once medicines reach the market, safety monitoring expands to real-world sources
 # ---------------- Other Pages ----------------
 elif page == "Literature Review":
     st.header("Literature Monitoring")
+    url = "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.ema.europa.eu/en/documents/regulatory-procedural-guideline/guideline-good-pharmacovigilance-practices-gvp-module-vi-collection-management-submission-reports-suspected-adverse-reactions-medicinal-products-rev-2_en.pdf"
+    st.markdown(f"[📄 Guideline GVP Module VI (PDF)-Literature Screening]({url})")
     st.info("The medical literature is a significant source of information for the monitoring of the safety profile and of the risk-benefit balance of medicinal products, particularly in relation to the detection of new safety signals or emerging safety issues. Marketing authorisation holders are therefore expected to maintain awareness of possible publications through a systematic literature review of widely used reference databases (e.g. Medline, Excerpta Medica or Embase) no less frequently than once a week."
             "Reports of suspected adverse reactions from the medical literature, including relevant published abstracts from meetings and draft manuscripts, should be reviewed and assessed by marketing authorisation holders to identify and record ICSRs."
             "If multiple medicinal products are mentioned in the publication, only those which are identified by the publication's author(s) as having at least a possible causal relationship with the suspected adverse reaction should be considered for literature review by the concerned marketing authorisation holder(s).")
 
-    article = st.text_input("Article Title")
-    journal = st.text_input("Journal")
-    drug = st.text_input("Drug")
-    reaction = st.text_input("Adverse Reaction")
-    if st.button("Screen Article"):
-        st.warning("Potential safety information identified. Further assessment required.")
+   # Inputs
+reporter_name = st.text_input("Primary Reporter Name")
+patient_identifier = st.text_input("Patient Identifier")
+drug = st.text_input("Drug")
+reaction = st.text_input("Adverse Reaction")
+
+MAH_Did_Drug_marketing_in_the_country_of_the_reporter = st.selectbox(
+    "Did MAH market the drug in the reporter's country?", 
+    ["Yes", "No"]
+)
+
+if st.button("Screen Article"):
+    if MAH_Did_Drug_marketing_in_the_country_of_the_reporter == "Yes":
+        # Check if all 4 fields are filled
+        if reporter_name and patient_identifier and drug and reaction:
+            st.success("This qualifies as an ICSR.")
+
+            # Check if reaction is listed
+            if reaction.strip() in listed_adverse_events:
+                st.info("No potential safety information; listed adverse event.")
+            else:
+                st.warning("Potential safety information identified. Further assessment required.")
+        else:
+            st.warning("Not an ICSR: Missing one or more required fields.")
+    else:
+        st.info("Drug not marketed in reporter's country. ICSR screening not applicable.")
 
 elif page == "Aggregate Reports Preparation":
     st.header("Aggregate Safety Reports")
