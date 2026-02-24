@@ -126,7 +126,7 @@ if page == "Home":
     st.write("• Periodic Safety Reports")
     st.write("• Risk Management Plans")
     st.write("• PV Quality Systems")
-    st.write("• Regulatory Submissions")"
+    st.write("• Regulatory Submissions")
     st.write("• PV Technology and Automation")
     st.subheader("Global Guidelines")
     st.write("Good Pharmacovigilance Practices (GVP)")
