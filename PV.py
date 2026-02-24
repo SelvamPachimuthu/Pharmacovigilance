@@ -14,7 +14,7 @@ st.set_page_config(
 st.markdown(
     """
     <h2 style='color: purple; font-weight: bold;'>
-    Hello, Safety Professionals! Welcome to the Pharmacovigilance Hub. Explore the tabs to learn about key PV domains and global guidelines.
+    Welcome to the Pharmacovigilance Hub! Explore the tabs to discover essential PV domains and stay updated on global guidelines.
     </h2>
     """,
     unsafe_allow_html=True
