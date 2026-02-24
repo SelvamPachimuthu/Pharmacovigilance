@@ -257,7 +257,7 @@ Once medicines reach the market, safety monitoring expands to real-world sources
         route = st.selectbox("Route of Administration", ["Oral", "IV", "IM", "Subcutaneous", "Other"])
         start_date = st.date_input("Start Date")
         end_date = st.date_input("End Date")
-        indication = st.text_area("Indication / Reason for Use"
+        indication = st.text_area("Indication / Reason for Use")
 
     # Causality Tab
     with tabs[6]:
