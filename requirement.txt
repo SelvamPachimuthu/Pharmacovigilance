@@ -2,3 +2,4 @@ import streamlit as st
 import pandas as pd
 from datetime import date as Date
 from fpdf import FPDF
+fpdf==1.7.2
