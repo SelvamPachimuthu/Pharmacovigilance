@@ -9,7 +9,43 @@ st.set_page_config(
     page_icon="💊",
     layout="wide"
 )
+st.markdown("""
+<style>
 
+body {
+    overflow-x: hidden;
+}
+
+/* floating pill style */
+.pill {
+    position: fixed;
+    font-size: 40px;
+    animation: float 12s linear infinite;
+    opacity: 0.25;
+}
+
+/* different positions */
+.pill1 { left: 5%; animation-duration: 14s; }
+.pill2 { left: 20%; animation-duration: 18s; }
+.pill3 { left: 40%; animation-duration: 16s; }
+.pill4 { left: 60%; animation-duration: 20s; }
+.pill5 { left: 80%; animation-duration: 15s; }
+
+/* movement */
+@keyframes float {
+    0% { top: 110%; transform: rotate(0deg); }
+    100% { top: -10%; transform: rotate(360deg); }
+}
+
+</style>
+
+<div class="pill pill1">💊</div>
+<div class="pill pill2">💊</div>
+<div class="pill pill3">💊</div>
+<div class="pill pill4">💊</div>
+<div class="pill pill5">💊</div>
+
+""", unsafe_allow_html=True)
 # Title
 st.title("💊 Pharmacovigilance - Drug Safety Data Management")
 
