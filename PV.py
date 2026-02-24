@@ -46,6 +46,7 @@ body {
 <div class="pill pill5">💊</div>
 
 """, unsafe_allow_html=True)
+
 # Title
 st.title("💊 Pharmacovigilance - Drug Safety Data Management")
 
@@ -76,7 +77,6 @@ page = st.sidebar.radio(
 
 # ---------------- HOME ----------------
 if page == "Home":
-    st.header("Welcome to Pharmacovigilance Hub")
     st.info("This application demonstrates core pharmacovigilance functional areas aligned with global regulatory guidelines.")
 
     st.subheader("Major PV Domains")
@@ -95,7 +95,70 @@ if page == "Home":
 
 # ---------------- ICSR PROCESSING ----------------
 elif page == "ICSR Processing":
-    st.title("ICSR Processing Dashboard")
+    url = "https://www.ema.europa.eu/en/documents/regulatory-procedural-guideline/guideline-good-pharmacovigilance-practices-gvp-module-vi-collection-management-submission-reports-suspected-adverse-reactions-medicinal-products-rev-2_en.pdf"
+    st.markdown(f"[📄 Guideline GVP Module VI (PDF)]({url})")
+
+    st.info("📊 ICSR management is a fundamental activity of pharmacovigilance
+
+✨ICSR ( identifiable reporter, an identifiable patient, a suspect product, and an adverse event. Without all four, it’s a "non-valid" case.)
+📋Steps:
+Case intake
+Triage
+Duplicate check
+Data entry
+Quality review 
+Medical review
+Quality control
+Regulatory submission
+
+Validated safety systems help capture, manage, and evaluate safety cases in alignment with Good Pharmacovigilance Practices (GVP) from the European Medicines Agency.
+
+Common pharmacovigilance platforms include:
+
+• Oracle Argus Safety
+• ARISg
+• Veeva Vault Safety
+• LifeSphere MultiVigilance
+• Clinevo Safety etc...
+
+These systems support structured workflows such as case intake, triage, data entry, medical review, quality control, and regulatory reporting.
+
+📈 Where Safety Information Comes From
+
+1️⃣ Clinical Development
+
+During clinical trials, safety is monitored closely according to guidelines from the International Council for Harmonisation.
+
+• SAE (Serious Adverse Event)
+Events that result in death, hospitalization, disability, life-threatening situations, or other medically important conditions.
+
+• SUSAR (Suspected Unexpected Serious Adverse Reaction)
+Serious reactions that are unexpected based on the Investigator’s Brochure or product information.
+
+These findings contribute to annual submissions such as the Development Safety Update Report (DSUR).
+
+2️⃣ Post-Marketing Surveillance
+Once medicines reach the market, safety monitoring expands to real-world sources.
+
+✨Solicited sources (organized programs)
+
+• Patient Support Programs
+• Disease registries
+• Post-Authorization Safety Studies (PASS)
+• Non-interventional studies
+• Compassionate use programs
+• Named patient programs
+
+✨Unsolicited sources (spontaneous reporting)
+
+• Healthcare professional reports
+• Consumer or patient reports
+• Medical information contacts
+• Health authority communications
+• Scientific and medical literature
+• Social media monitoring")
+
+    st.title("ICSR Processing Model Dashboard")
 
     tabs = st.tabs([
         "General", "Reporter", "Patient", "Parent Case", "Adverse Event",
@@ -170,11 +233,11 @@ elif page == "ICSR Processing":
     # Reporting Tab
     with tabs[8]:
         st.header("Submit Case")
-        if st.button("Generate CDSCO PDF"):
+        if st.button("Generate PDF"):
             pdf = FPDF()
             pdf.add_page()
             pdf.set_font("Arial", 'B', 16)
-            pdf.cell(0, 10, "ICSR Case Report - CDSCO", ln=True, align='C')
+            pdf.cell(0, 10, "ICSR Case Report", ln=True, align='C')
             pdf.ln(5)
 
             # Add sections here... (your existing multi_cell PDF generation code)
@@ -183,12 +246,16 @@ elif page == "ICSR Processing":
             pdf.output(pdf_file)
 
             with open(pdf_file, "rb") as f:
-                st.download_button("Download CDSCO PDF", f, file_name=pdf_file, mime="application/pdf")
+                st.download_button("Download PDF", f, file_name=pdf_file, mime="application/pdf")
             st.success("PDF generated successfully!")
 
 # ---------------- Other Pages ----------------
 elif page == "Literature Review":
     st.header("Literature Monitoring")
+    st.info("The medical literature is a significant source of information for the monitoring of the safety profile and of the risk-benefit balance of medicinal products, particularly in relation to the detection of new safety signals or emerging safety issues. Marketing authorisation holders are therefore expected to maintain awareness of possible publications through a systematic literature review of widely used reference databases (e.g. Medline, Excerpta Medica or Embase) no less frequently than once a week."
+            "Reports of suspected adverse reactions from the medical literature, including relevant published abstracts from meetings and draft manuscripts, should be reviewed and assessed by marketing authorisation holders to identify and record ICSRs."
+            "If multiple medicinal products are mentioned in the publication, only those which are identified by the publication's author(s) as having at least a possible causal relationship with the suspected adverse reaction should be considered for literature review by the concerned marketing authorisation holder(s).")
+
     article = st.text_input("Article Title")
     journal = st.text_input("Journal")
     drug = st.text_input("Drug")
