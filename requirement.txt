@@ -1,1 +1,4 @@
-Sources: Literature, Clinical Trials, Adverse Event Reporting Systems, Electronic Health Records, Social Media, Regulatory Agencies, Healthcare Professionals, Patients, Pharmaceutical Companies, Scientific Research, Pharmacovigilance Databases.
+import streamlit as st
+import pandas as pd
+from datetime import date as Date
+from fpdf import FPDF
