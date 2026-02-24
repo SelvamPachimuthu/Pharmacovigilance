@@ -67,10 +67,7 @@ page = st.sidebar.radio(
         "Aggregate Reports Preparation",
         "Signal Management",
         "Risk Management",
-        "Quality Assurance (PV QA)",
         "Regulatory Reporting / Submissions",
-        "Safety Database Management",
-        "Real-World Evidence (RWE) Safety",
         "Automation / PV Technology",
     ],
 )
@@ -101,16 +98,24 @@ elif page == "ICSR Processing":
     st.text("""📊 ICSR management is a fundamental activity of pharmacovigilance
 
 ✨ICSR ( identifiable reporter, an identifiable patient, a suspect product, and an adverse event. Without all four, it’s a "non-valid" case.)
-📋Steps:
-Case intake
-Triage
-Duplicate check
-Data entry
-Quality review 
-Medical review
-Quality control
-Regulatory submission
-
+📋Steps:"""
+case_workflow = {
+    "Case Intake": "Initial receipt of the case from healthcare provider, patient, literature, or other sources; collection of all relevant information including demographics, medical history, suspect and concomitant drugs, and event details.",
+    
+    "Triage": "Assessment of the case to determine priority and next steps. Includes evaluating seriousness, expectedness, and completeness, and routing to the appropriate team for processing.",
+    
+    "Duplicate Check": "Comparison of the case with existing cases in the database to identify potential duplicates and prevent redundant reporting. Cases are marked as duplicate or unique.",
+    
+    "Data Entry": "Accurate entry of case information into the safety database, including patient details, drug information, adverse events, lab results, and other relevant data.",
+    
+    "Quality Review": "Medical review to evaluate clinical plausibility, completeness, and appropriate coding (e.g., MedDRA for events, WHO Drug for drugs). Ensures case is medically sound and complete.",
+    
+    "Quality Control": "Verification of data accuracy, consistency, and compliance with internal SOPs and regulatory requirements. May overlap with quality review but focuses on correctness and completeness.",
+    
+    "Regulatory Submission": "Preparation and submission of the case to regulatory authorities according to local and global regulations (e.g., CIOMS, E2B(R3) format). Includes tracking submissions and acknowledgments for serious or reportable cases."
+}
+          st.table(pd.DataFrame(list(acase_workflow.items()), columns=["Step", "Description"]))      
+"""
 Validated safety systems help capture, manage, and evaluate safety cases in alignment with Good Pharmacovigilance Practices (GVP) from the European Medicines Agency.
 
 Common pharmacovigilance platforms include:
@@ -258,37 +263,95 @@ elif page == "Literature Review":
             "Reports of suspected adverse reactions from the medical literature, including relevant published abstracts from meetings and draft manuscripts, should be reviewed and assessed by marketing authorisation holders to identify and record ICSRs."
             "If multiple medicinal products are mentioned in the publication, only those which are identified by the publication's author(s) as having at least a possible causal relationship with the suspected adverse reaction should be considered for literature review by the concerned marketing authorisation holder(s).")
 
-   # Inputs
-reporter_name = st.text_input("Primary Reporter Name")
-patient_identifier = st.text_input("Patient Identifier")
+import streamlit as st
+
+# Example list of listed adverse events
+listed_adverse_events = ["Nausea", "Headache", "Rash", "Dizziness"]
+
+# Choose data type
+data_type = st.selectbox("Select Data Type", ["Single Patient", "Aggregate Data"])
+
+# Inputs common to both
 drug = st.text_input("Drug")
 reaction = st.text_input("Adverse Reaction")
 
-MAH_Did_Drug_marketing_in_the_country_of_the_reporter = st.selectbox(
-    "Did MAH market the drug in the reporter's country?", 
-    ["Yes", "No"]
-)
+# Inputs specific to Single Patient
+if data_type == "Single Patient":
+    reporter_name = st.text_input("Primary Reporter Name")
+    patient_identifier = st.text_input("Patient Identifier")
+    MAH_marketing = st.selectbox(
+        "Did MAH market the drug in the reporter's country?", 
+        ["Yes", "No"]
+    )
 
 if st.button("Screen Article"):
-    if MAH_Did_Drug_marketing_in_the_country_of_the_reporter == "Yes":
-        # Check if all 4 fields are filled
-        if reporter_name and patient_identifier and drug and reaction:
-            st.success("This qualifies as an ICSR.")
+    # For Single Patient Data
+    if data_type == "Single Patient":
+        if MAH_marketing == "Yes":
+            if reporter_name and patient_identifier and drug and reaction:
+                st.success("This qualifies as an ICSR.")
 
-            # Check if reaction is listed
+                # Check if reaction is listed
+                if reaction.strip() in listed_adverse_events:
+                    st.info("No potential safety information; listed adverse event.")
+                else:
+                    st.warning("Potential safety information identified. Further assessment required.")
+            else:
+                st.warning("Not an ICSR: Missing one or more required fields.")
+        else:
+            st.info("Drug not marketed in reporter's country. ICSR screening not applicable.")
+    
+    # For Aggregate Data
+    else:  # Aggregate Data
+        if reaction:
             if reaction.strip() in listed_adverse_events:
                 st.info("No potential safety information; listed adverse event.")
             else:
                 st.warning("Potential safety information identified. Further assessment required.")
         else:
-            st.warning("Not an ICSR: Missing one or more required fields.")
-    else:
-        st.info("Drug not marketed in reporter's country. ICSR screening not applicable.")
+            st.warning("Aggregate data missing adverse reaction information.")
 
 elif page == "Aggregate Reports Preparation":
     st.header("Aggregate Safety Reports")
-    data = {"Report Type": ["PSUR", "PBRER", "DSUR"], "Frequency": ["Periodic", "Periodic", "Annual"]}
-    st.table(pd.DataFrame(data))
+    url_PSUR_GVP_Module_7="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.ema.europa.eu/en/documents/scientific-guideline/guideline-good-pharmacovigilance-practices-gvp-module-vii-periodic-safety-update-report_en.pdf"
+    url_PBRER_ICH_E2C_R2= "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://database.ich.org/sites/default/files/E2C_R2_Guideline.pdf"
+    url_DSUR_ICH_E2F = "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://database.ich.org/sites/default/files/E2F_Guideline.pdf"
+    aggregate_reports = {
+    "PSUR": {
+        "Frequency": "Periodic (6 months–3 years depending on lifecycle stage)",
+        "Regulatory_Region_Example": ["EU", "India", "Other global regulators"],
+        "Purpose": "Safety-focused: monitor cumulative safety data, detect new safety signals, evaluate risk-benefit",
+        "Key_Notes": [
+            "Primarily safety-oriented",
+            "Structured as per ICH E2C(R2) guidelines",
+            "Being gradually replaced in some regions by PBRER"
+        ],
+       "Link": [url_PSUR_GVP_Module_7]
+    },
+    "PBRER": {
+        "Frequency": "Periodic (aligned with product lifecycle, similar to PSUR)",
+        "Regulatory_Region_Example": ["EMA", "FDA", "Global harmonized standard"],
+        "Purpose": "Integrated benefit-risk evaluation including safety and efficacy data",
+        "Key_Notes": [
+            "Modern standard replacing PSUR in many regions",
+            "Includes missing information and cumulative benefit-risk analysis",
+            "Based on ICH E2C(R2) guidelines"
+        ],
+        "Link": [url_PBRER_ICH_E2C_R2]
+    },
+    "DSUR": {
+        "Frequency": "Annual",
+        "Regulatory_Region_Example": ["USA", "EU", "Global"],
+        "Purpose": "Safety monitoring during clinical development of investigational drugs",
+        "Key_Notes": [
+            "Pre-marketing report for clinical trials",
+            "Summarizes adverse events (AEs/SAEs) and risk evaluation",
+            "Based on ICH E2F guidelines"
+        ],
+        "Link": [url_DSUR_ICH_E2F]
+    }
+}
+    st.table(pd.DataFrame(aggregate_reports))
 
 elif page == "Signal Management":
     st.header("Signal Detection and Management")
@@ -302,12 +365,6 @@ elif page == "Risk Management":
     if st.button("Save Risk"):
         st.success("Risk entry recorded.")
 
-elif page == "Quality Assurance (PV QA)":
-    st.header("Pharmacovigilance Quality System")
-    audit = st.text_input("Audit Name")
-    finding = st.text_area("Observation")
-    if st.button("Log Finding"):
-        st.info("Quality record logged.")
 
 elif page == "Regulatory Reporting / Submissions":
     st.header("Regulatory Safety Reporting")
@@ -315,15 +372,6 @@ elif page == "Regulatory Reporting / Submissions":
     if st.button("Prepare Submission"):
         st.success("Submission package simulated.")
 
-elif page == "Safety Database Management":
-    st.header("Safety Database Systems")
-    systems = ["Argus", "ARISg", "Veeva", "Empirica"]
-    st.write(systems)
-
-elif page == "Real-World Evidence (RWE) Safety":
-    st.header("Real World Evidence in Drug Safety")
-    data = {"Source": ["EHR", "Claims", "Registry"], "Cases": [120, 85, 45]}
-    st.bar_chart(pd.DataFrame(data).set_index("Source"))
 
 elif page == "Automation / PV Technology":
     st.header("Automation in Pharmacovigilance")
