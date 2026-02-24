@@ -2,7 +2,12 @@ import streamlit as st
 import pandas as pd
 from datetime import date as Date
 from fpdf import FPDF
+import importlib.util
+import streamlit as st
 
+if importlib.util.find_spec("fpdf") is None:
+    st.error("fpdf2 is not installed! Make sure it's in requirements.txt.")
+    
 # Page configuration
 st.set_page_config(
     page_title="Pharmacovigilance Hub",
