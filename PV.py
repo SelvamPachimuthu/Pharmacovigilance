@@ -12,45 +12,24 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-/* Page background with reduced vibrant gradient */
+/* Page background: soft sandy/light gradient */
 [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, 
-        #FF7F00,   /* orange */
-        #FFFF00,   /* yellow */
-        #00FF00,   /* green */
-        #00FFFF    /* cyan */
+        #f4e1c1,   /* light sand */
+        #f9f2e7,   /* ivory */
+        #ffe7c4,   /* pale orange */
+        #fef9f0    /* cream */
     );
-    background-size: 400% 400%;
+    background-size: 400% 400%;  /* gradient animation */
     animation: gradientShift 25s ease infinite;
     position: relative;
 }
 
-/* Sidebar background with reduced vibrant colors */
+/* Sidebar background with similar sandy gradient */
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, 
-        #FF7F00, #FFFF00, #00FF00, #00FFFF
+        #f4e1c1, #f9f2e7, #ffe7c4, #fef9f0
     );
-}
-
-/* Optional: animate the gradient if needed */
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-            
-/* Smooth gradient animation */
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Animation keyframes for smooth gradient shift */
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 /* Floating pill style */
@@ -75,7 +54,7 @@ st.markdown("""
     100% { top: -10%; transform: rotate(360deg); }
 }
 
-/* Gradient shift for a "lit" effect */
+/* Gradient animation */
 @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -89,7 +68,6 @@ st.markdown("""
 <div class="pill pill4">🟢</div>
 <div class="pill pill5">📄</div>
 """, unsafe_allow_html=True)
-
 # Title
 st.title("💊📄 Pharmacovigilance - Drug Safety Data Management")
 
